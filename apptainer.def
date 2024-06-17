@@ -1,0 +1,17 @@
+BootStrap: docker
+From: rocker/rstudio:4.2
+
+%post
+    Rscript -e 'install.packages("tidyverse"); library(tidyverse)'
+    Rscript -e 'install.packages("BiocManager"); library(BiocManager)'
+    Rscript -e 'install.packages("devtools"); library(devtools)'
+    Rscript -e 'remotes::install_github("RGLab/cytoinstaller"); library(cytoinstaller)'
+    Rscript -e 'cytoinstaller::install_cyto(bioc_ver="3.13")'
+    Rscript -e 'devtools::install_github("DillonHammill/CytoExploreRData"); library(CytoExploreRData)'
+    Rscript -e 'devtools::install_github("DillonHammill/CytoExploreR"); library(CytoExploreR)'
+
+%test
+    rstudio-server version
+
+%runscript
+    /init
