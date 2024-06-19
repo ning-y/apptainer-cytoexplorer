@@ -1,14 +1,21 @@
 BootStrap: docker
-From: rocker/rstudio:4.2
+From: rocker/rstudio
 
+# Unlike utils::install.packages, pak::pkg_install handles system dependencies
+# e.g. libxml2-dev for xml2 for tidyverse; rlbarter/superheat is a GitHub-only
+# dependency of CytoExploreRData
 %post
-    Rscript -e 'install.packages("tidyverse"); library(tidyverse)'
-    Rscript -e 'install.packages("BiocManager"); library(BiocManager)'
-    Rscript -e 'install.packages("devtools"); library(devtools)'
-    Rscript -e 'remotes::install_github("RGLab/cytoinstaller"); library(cytoinstaller)'
-    Rscript -e 'cytoinstaller::install_cyto(bioc_ver="3.13")'
-    Rscript -e 'devtools::install_github("DillonHammill/CytoExploreRData"); library(CytoExploreRData)'
-    Rscript -e 'devtools::install_github("DillonHammill/CytoExploreR"); library(CytoExploreR)'
+    apt update
+    Rscript -e 'install.packages("pak"); library(pak)'
+    Rscript -e 'pak::pkg_install("tidyverse"); library(tidyverse)'
+    Rscript -e 'pak::pkg_install("BiocManager"); library(BiocManager)'
+    Rscript -e 'BiocManager::install("cytolib"); library(cytolib)'
+    Rscript -e 'BiocManager::install("flowCore"); library(flowCore)'
+    Rscript -e 'BiocManager::install("openCyto"); library(openCyto)'
+    Rscript -e 'BiocManager::install("flowWorkspace"); library(flowWorkspace)'
+    Rscript -e 'pak::pkg_install("rlbarter/superheat"); library(superheat)'
+    Rscript -e 'pak::pkg_install("DillonHammill/CytoExploreRData"); library(CytoExploreRData)'
+    Rscript -e 'pak::pkg_install("DillonHammill/CytoExploreR"); library(CytoExploreR)'
 
 %test
     rstudio-server version
