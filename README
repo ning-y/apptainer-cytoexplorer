@@ -1,0 +1,9 @@
+This repository builds a Docker image with rstudio-server with CytoExploreR pre-
+installed. My intention is to trial RStudio/CytoExploreR as a replacement for
+commercial paid flow cytometry visualization softwares.
+
+To build, run build.sh; to run, run run.sh. For customized builds and runs,
+adapt the commands within these two shell scripts.
+
+Requires Docker. Apptainer does not seem work, apparently due to some 
+incompatibility between rstudio-server and Apptainer's read-only filesystem.
